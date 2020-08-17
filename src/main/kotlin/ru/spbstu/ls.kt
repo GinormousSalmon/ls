@@ -3,11 +3,11 @@ package ru.spbstu
 import java.io.File
 import java.util.*
 
-class Ls{
+class Ls {
     private fun getBinMask(file: File): String {
-        return (if (file.canExecute()) "1" else "0") +
-                (if (file.canRead()) "1" else "0") +
-                (if (file.canWrite()) "1" else "0")
+        return (if (file.canRead()) "1" else "0") +
+                (if (file.canWrite()) "1" else "0") +
+                (if (file.canExecute()) "1" else "0")
     }
 
     private fun getRwxMask(file: File): String {
@@ -33,8 +33,12 @@ class Ls{
         val files = when {
             path.isDirectory -> path.listFiles()!!.asList()
             path.isFile -> listOf(path)
-            else -> throw IllegalArgumentException()
+            else -> throw IllegalArgumentException("directory or file doesn't exists")
         }.toMutableList()
+        if (files.isEmpty()) {
+            println("directory is empty")
+            return
+        }
         val longestName = files.maxBy { it.name }!!.name.length + 5
         if (isReversed)
             files.sortByDescending { it.name }
@@ -47,7 +51,7 @@ class Ls{
                             "  ${Date(it.lastModified())}  ${convertSize(it.length())}"
                 }
             else
-                files.map { "${it.name}, ${getBinMask(it)},  ${it.lastModified()},  ${it.length()}" }
+                files.map { it.name + "%${longestName - it.name.length}s".format(getBinMask(it)) + "  ${it.lastModified()}  ${it.length()}B" }
         } else {
             files.map { it.name }.sorted()
         }
