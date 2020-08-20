@@ -11,7 +11,7 @@ class LsLauncher {
     @Option(name = "-l", metaVar = "Long", required = false, usage = "Switches output to long format")
     private var isLong: Boolean = false
 
-    @Option(name = "-h", metaVar = "HumanReadable", required = false, usage = "Switches output to humanreadable format")
+    @Option(name = "-h", metaVar = "HumanReadable", required = false, usage = "Switches output to human readable format")
     private var isHumanReadable: Boolean = false
 
     @Option(name = "-r", metaVar = "Reverse", required = false, usage = "Reverses output")

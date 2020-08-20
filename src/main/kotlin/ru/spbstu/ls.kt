@@ -1,7 +1,9 @@
 package ru.spbstu
 
 import java.io.File
+import java.lang.Math.round
 import java.util.*
+import kotlin.math.roundToInt
 
 class Ls {
     private fun getBinMask(file: File): String {
@@ -26,7 +28,7 @@ class Ls {
             size /= 1024
             count++
         }
-        return "%.3f".format(size) + dim[count]
+        return ((size * 1000).roundToInt().toDouble() / 1000).toString() + dim[count]
     }
 
     fun work(isLong: Boolean, isHumanReadable: Boolean, isReversed: Boolean, out: File?, path: File) {
@@ -39,7 +41,7 @@ class Ls {
             println("directory is empty")
             return
         }
-        val longestName = files.maxBy { it.name }!!.name.length + 5
+        val longestName = files.maxBy { it.name.length }!!.name.length + 5
         if (isReversed)
             files.sortByDescending { it.name }
         else
@@ -53,7 +55,7 @@ class Ls {
             else
                 files.map { it.name + "%${longestName - it.name.length}s".format(getBinMask(it)) + "  ${it.lastModified()}  ${it.length()}B" }
         } else {
-            files.map { it.name }.sorted()
+            files.map { it.name }
         }
         if (out != null) {
             val outputStream = out.bufferedWriter()
